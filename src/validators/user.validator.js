@@ -8,3 +8,8 @@ export const userValidation = yup.object({
 
 
 })
+
+export const loginValidation = yup.object({
+    email: yup.string().required().email(),
+    password: yup.string().required().min(6)
+})

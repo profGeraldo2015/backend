@@ -13,5 +13,8 @@ app.use(cors())
 app.use(express.json());
 routes(app);
 
-app.listen(3001)
-console.log("Server initializing...")
+app.listen(3001, () =>{ 
+
+	console.log("Server initializing...port 3001!!!")
+
+});

@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { userValidation } from "../validators/user.validator";
 import { createUser, getUsers, getById, updateUser ,deleteUser} from "../repositories/user.repository";
+import jsonwebtoken from "jsonwebtoken";
+
 
 export const create = async (req, res) => {
 
@@ -13,9 +15,10 @@ export const create = async (req, res) => {
 
         const user = await createUser(req.body)
         
-        console.log(user)
+        //console.log(user)
 
         res.status(201).send(user)
+        
     } catch (error) {
         console.log(error)
         res.status(400).send(error.errors)
