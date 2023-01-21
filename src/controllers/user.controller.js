@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { userValidation } from "../validators/user.validator";
-import { createUser, getUsers, getById, updateUser ,deleteUser} from "../repositories/user.repository";
+import { createUser, getUsers, getById, updateUser, deleteUser, getAll } from "../repositories/user.repository";
 import jsonwebtoken from "jsonwebtoken";
 
 
@@ -14,11 +14,11 @@ export const create = async (req, res) => {
         req.body.password = hashpassword
 
         const user = await createUser(req.body)
-        
+
         //console.log(user)
 
         res.status(201).send(user)
-        
+
     } catch (error) {
         console.log(error)
         res.status(400).send(error.errors)
@@ -30,7 +30,26 @@ export const list = async (req, res) => {
     try {
         const users = await getUsers()
 
+
         res.status(200).send(users)
+    } catch (e) {
+        res.status(400).send(e)
+
+    }
+}
+
+export const page = async (req, res) => {
+    try {
+
+        const users2 = await getAll(Number(req.params.skip), Number(req.params.page))
+
+        const { total, totalPage, users } = users2
+        console.log(total)
+        console.log(totalPage)
+        console.log(users)
+
+        res.status(200).send(users2)
+
     } catch (e) {
         res.status(400).send(e)
 

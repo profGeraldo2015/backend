@@ -45,8 +45,31 @@ export const getUsers = async () => {
 
     //    const users = await prisma.user.findMany({select:{name:true}});
     const users = await prisma.user.findMany({});
+    console.log('saiu do banco -> '+users)
 
     return users
+}
+
+export const getAll = async ( skip , take ) => {
+
+    //    const users = await prisma.user.findMany({select:{name:true}});
+    const [users,total] = await prisma.$transaction([prisma.user.findMany({
+        select:
+            {name:true,
+            email:true,
+            phoneNumber:true},
+        skip, take 
+    }),
+    prisma.user.count()
+    ]);
+
+   // console.log('saiu do banco -> '+users.users.data)
+    
+    const totalPage = Math.ceil(total / take)
+
+
+    return { total, totalPage, users }
+
 }
 
 export const getById = async (id) => {

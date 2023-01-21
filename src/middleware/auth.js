@@ -5,6 +5,7 @@ const { promisify} = require('util')
 module.exports = {
 
     eAdmin: async function(req, res, next) {
+        console.log(' header auth => '+req.headers.authorization)
         const authHeader = req.headers.authorization
         //console.log(authHeader)
         if(!authHeader){
@@ -19,7 +20,7 @@ module.exports = {
         }
 
         try {
-            const decode = await promisify(jsonwebtoken.verify)(token, "D45T78H4582FG547RFG57SA8DF5IPP459S9")
+            const decode = await promisify(jsonwebtoken.verify)(token, process.env.JWT_PUBLIC_KEY )
 //            console.log('decode.id '+decode.id)
             req.body.id = decode.id 
   //          console.log(' req '+req.body.id)

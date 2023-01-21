@@ -21,19 +21,20 @@ export const login = async (req, res) => {
 
         console.log(user.email)
         console.log(user.password)
+        console.log(user.name)
 
         if (bcrypt.compare(req.body.password, user.password)) {
 
             //pode ser enviado m aiscampos com email nome etc...
-            var token = jsonwebtoken.sign({ id: user.id , email: user.email}, "D45T78H4582FG547RFG57SA8DF5IPP459S9", {
-                expiresIn: 6000
+            var token = jsonwebtoken.sign({ id: user.id , email: user.email, name: user.name}, process.env.JWT_PUBLIC_KEY, {
+                expiresIn: 60 * 60 * 24//seg,min,hora
             })
 
             console.log('logado')
             res.status(201).send({
                 msg: "logado",
-                status: true,
-                token: token
+                token: token,
+                name : user.name,
             })
 
         } else {
@@ -55,10 +56,10 @@ export const list = async (req, res) => {
         const users = await getUsers()
         console.log('user Id ' + req.body.id)
         res.status(200).send(
-            {
-                id_usuario_logado: req.body.id,
+            //{
+                //id_usuario_logado: req.body.id,
                 users: users
-            }
+            //}
         )
 
     } catch (e) {
